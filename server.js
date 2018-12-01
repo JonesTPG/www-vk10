@@ -7,6 +7,13 @@ var app = express()
 var mongoose = require('mongoose')
 var bodyParser = require('body-parser')
 
+//viikko 10: autentikaatio passportilla
+var passport = require('passport')
+var flash    = require('connect-flash')
+var session  = require('express-session')
+var cookieParser = require('cookie-parser');
+
+
 var config = require('./app/config.js')
 
 var db = mongoose.connect(config.DB, function(error){
@@ -15,13 +22,21 @@ var db = mongoose.connect(config.DB, function(error){
         console.log("connection successful");
 });
 
-
+require('./app/passport')(passport)
+app.use(cookieParser())
 
 app.use(express.static(path.join(__dirname, '/public')))
-
 app.use(morgan('dev'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
+
+app.use(session({ secret: 'asddghertg34thg25y' })); // session secret
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessions
+app.use(flash()); // use connect-flash for flash messages stored in session
+
+require('./app/auth-routes')(app, passport)
+
 
 var port = config.APP_PORT | 4000
 app.listen(port)
@@ -29,8 +44,10 @@ app.listen(port)
 console.log('App listening on port ' + port)
 
 var todoRoutes = require('./app/routes.js')
+//var authRoutes = require('./app/auth-routes.js')
 
 app.use('/api', todoRoutes)
+//app.use('/auth', authRoutes)
 
 app.use(function (req, res, next) {
     // Website you wish to allow to connect
