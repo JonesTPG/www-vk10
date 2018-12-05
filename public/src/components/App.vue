@@ -2,7 +2,7 @@
 <template>
   <div id="app">
     <div class="container">
-      
+        <info></info>
         <create-todo></create-todo>
         <list-todo></list-todo>
      
@@ -14,12 +14,13 @@
 <script>
   import CreateTodo from './CreateTodo.vue';
   import ListTodo from './ListTodo.vue';
+  import Info from './Info.vue';
   export default {
     name: 'app',
     data() {
       return {}
     },
-    components: {CreateTodo,  ListTodo},
+    components: {CreateTodo,  ListTodo, Info},
   }
 </script>
 <style>

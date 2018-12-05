@@ -35,7 +35,9 @@ module.exports = function(app, passport) {
     app.get('/signup', function(req, res) {
 
         // render the page and pass in any flash data if it exists
-        res.render('signup.ejs', { message: req.flash('signupMessage') });
+        //res.render('signup.ejs', { message: req.flash('signupMessage') });
+        console.log('signup page')
+        res.sendfile('./public/signup.html')
     });
 
     // process the signup form
@@ -53,9 +55,13 @@ module.exports = function(app, passport) {
     // we will want this protected so you have to be logged in to visit
     // we will use route middleware to verify this (the isLoggedIn function)
     app.get('/profile', isLoggedIn, function(req, res) {
-        res.render('profile.ejs', {
-            user : req.user // get the user out of session and pass to template
-        });
+        
+        //res.set({'username': req.user.local.email})
+
+        res.sendfile('./public/profile.html')
+        //, {
+        //     user : req.user // get the user out of session and pass to template
+        // });
     });
 
     // =====================================
@@ -65,6 +71,13 @@ module.exports = function(app, passport) {
         req.logout();
         res.redirect('/');
     });
+
+
+    app.get('/username', isLoggedIn, function(req, res) {
+        let username = req.user.local.email
+        
+        res.send(username)
+    })
 };
 
 // route middleware to make sure a user is logged in

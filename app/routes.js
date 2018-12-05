@@ -8,8 +8,23 @@ var Todo = require('./todo.js')
 
 // get all todos in the db
 
-todoRoutes.route('/all').get(function(req, res, next) {
-    Todo.find(function(err, todos) {
+// todoRoutes.route('/all').get(function(req, res, next) {
+//     Todo.find(function(err, todos) {
+//         if(err) {
+//             console.log("error")
+//             return next(new Error(err))
+//         }
+//         res.json(todos)
+//     })
+// })
+
+// haetaan tietyn käyttäjän muistiinpanot tietokannasta
+
+todoRoutes.route('/:user/all').get(isCurrentUser, function(req, res, next) {
+    
+
+
+    Todo.find({ author: req.params.user }, function(err, todos) {
         if(err) {
             console.log("error")
             return next(new Error(err))
@@ -24,7 +39,8 @@ todoRoutes.route('/add').post(function (req, res) {
     Todo.create(
     {
         name: req.body.name,
-        done: false
+        done: false,
+        author: req.body.author
     },
     function (error, todo) {
         if (error) {
@@ -46,6 +62,17 @@ todoRoutes.route('/delete/:id').get(function (req, res, next) {
     res.json('Successfully removed')
     })
 })
+
+
+function isCurrentUser(req, res, next) {
+
+    // if user is authenticated in the session, carry on 
+    if (req.isAuthenticated() && req.params.user === req.user.local.email)
+        return next();
+
+    // if they aren't redirect them to the home page
+    res.redirect('/');
+}
 
 
 module.exports = todoRoutes

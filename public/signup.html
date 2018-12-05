@@ -1,13 +1,11 @@
 <!doctype html>
 <html>
 <head>
-    <title>Muistilistan autentikaatio</title>
+    <title>Muistilista autentikaatio</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <style>
-        body  {
-            padding-top:80px;
-        }
+        body        { padding-top:80px; }
     </style>
 </head>
 <body>
@@ -15,13 +13,12 @@
 
 <div>
 
-    <h1>Kirjaudu sisään</h1>
+    <h1>Rekisteröidy</h1>
 
     
-        
-
+    
     <!-- LOGIN FORM -->
-    <form action="/login" method="post">
+    <form action="/signup" method="post">
         <div>
             <label>Sähköposti</label>
             <input type="text" name="email">
@@ -31,12 +28,12 @@
             <input type="password" name="password">
         </div>
 
-        <button type="submit">Kirjaudu sisään</button>
+        <button type="submit">Signup</button>
     </form>
 
     <hr>
 
-    <p>Eikö sinulla ole vielä tiliä? <a href="/signup">Rekisteröidy</a></p>
+    <p>Onko sinulla jo tili? <a href="/login">Kirjaudu</a></p>
     
 
 </div>
@@ -44,4 +41,3 @@
 </div>
 </body>
 </html>
-

@@ -24,26 +24,40 @@
   export default {
     data() {
       return {
-        todo: ''
+        todo: '',
+        username: ''
+
       }
     },
     methods: {
       addTodo(event) {
         
         if (event) event.preventDefault();
+
+
         let url = 'http://localhost:4000/api/add';
-        let param = {
+        
+        axios.get('http://localhost:4000/username').then((response)=> {
+       
+          this.username = response.data
+
+          let param = {
           name: this.todo,
-          done: 0
-      };
-        axios.post(url, param).then((response) => {
-          console.log(response);
-          this.clearTodo();
-          this.refreshTodo();
+          done: 0,
+          author: this.username
+          };
+
+          axios.post(url, param).then((response) => {
+            console.log(response);
+            this.clearTodo();
+            this.refreshTodo();
           
         }).catch((error) => {
           console.log(error);
         })
+
+        }) 
+
         
       },
       clearTodo() {

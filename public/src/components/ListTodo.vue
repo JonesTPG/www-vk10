@@ -3,11 +3,13 @@
     <div>
         <div class="col-md-12" v-show="todos.length>0">
             <h3>Muistilista</h3>
+
+
              <div class="row mrb-10" v-for="todo in todos" v-bind:key="todo.name">
                 <div style="float:left; clear:none;">
                     
                     <input type="text" v-model="todo.name">
-                    <span style="float: right;" class="waves-effect waves-light btn" title="Delete todo?" v-on:click="deleteTodo(todo._id)">Poista</span>
+                    <span style="float: right;" class="waves-effect waves-light btn" title="Poista?" v-on:click="deleteTodo(todo._id)">Poista</span>
 
                 </div>
                 
@@ -29,18 +31,28 @@
     export default {
         data() {
             return {
-                todos: []
+                todos: [],
+                username: ''
             }
         },
-        created: function() { // hae data tietokannasta ja 
+        created: function() {  
             this.fetchTodo();
             this.listenToEvents();
         },
         methods: {
             fetchTodo() {
-                let uri = 'http://localhost:4000/api/all';
-                axios.get(uri).then((response) => {
-                    this.todos = response.data;
+                
+                
+                axios.get('http://localhost:4000/username').then((response)=> {
+                    console.log(response.data + 'tuli axiosilta')
+                    this.username = response.data;
+                    let uri = 'http://localhost:4000/api/' + this.username + '/all';
+                    axios.get(uri).then((response) => {
+                        
+                        this.todos = response.data;
+                        console.log("käyttäjän muistiinpanot haettu.")
+                    });
+
                 });
             },
             updateTodo(todo) {

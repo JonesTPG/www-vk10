@@ -1,5 +1,7 @@
 var mongoose = require('mongoose')
 
+
+
 // Define collection and schema for todo item
 
 var todo = new mongoose.Schema({
@@ -9,7 +11,12 @@ var todo = new mongoose.Schema({
 
   done: {
     type: Boolean
+  },
+
+  author: {
+    type: String
   }
+
 },
 
   {
